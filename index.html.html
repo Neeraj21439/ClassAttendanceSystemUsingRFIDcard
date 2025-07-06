@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Attendance App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a2e8d0339f.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+     .dark-mode {
+      background-color: #1a202c;
+      color: white;
+    }
+
+    .light-mode-dashboard {
+      color: black;
+    }
+    .light-mode-dashboard1 {
+      color: gray;
+    }
+
+
+
+    .dark-mode-dashboard {
+      color: white;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 100px auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .dark-mode #reportsSection table,
+    .dark-mode #dashboardSection table {
+      background-color: #2d3748;
+      color: white;
+    }
+
+    .dark-mode,
+    .light-mode,
+    .card,
+    .modal,
+    #reportsSection,
+    #dashboardSection {
+      transition: background-color 2s ease, color 0.5s ease;
+    }
+
+
+    .dark-mode #reportsSection th,
+    .dark-mode #reportsSection td,
+    .dark-mode #dashboardSection th,
+    .dark-mode #dashboardSection td {
+      border-color: #4a5568;
+    }
+
+    .dark-mode .card {
+      background-color: #2d3748;
+      color: white;
+    }
+
+    .dark-mode .modal {
+      background-color: #2d3748;
+      color: white;
+    }
+  
+  </style>
+</head>
+
+<body class="transition-colors duration-1000 ease-in-out">
+  <div class="flex min-h-screen">
+    <aside class="w-64 bg-gray-800 text-white p-4 space-y-4 hidden md:block">
+      <h2 class="text-2xl font-bold mb-6">📋 Attendance</h2>
+      <nav class="space-y-2">
+        <a href="#" onclick="backToDashboard()" class="block hover:bg-gray-700 px-3 py-2 rounded">Dashboard</a>
+        <a href="#" onclick="showReports()" class="block hover:bg-gray-700 px-3 py-2 rounded">Reports</a>
+        <a href="#" class="block hover:bg-gray-700 px-3 py-2 rounded">Students</a>
+        <a href="#" class="block hover:bg-gray-700 px-3 py-2 rounded">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-4">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold" id="clr">Attendance Dashboard</h1>
+        <div class="space-x-2">
+          <button onclick="toggleDarkMode()"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded transition: background-color 0.3s ease, color 0.3s ease;">🌓
+            Theme</button>
+          <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded">Logout</button>
+        </div>
+      </div>
+
+      <div id="loader" class="loader"></div>
+
+      <div id="dashboardSection">
+        <div class="flex flex-wrap gap-4 mb-4 items-center">
+          <input type="text" id="searchInput" placeholder="Search by Name or Roll No..."
+            class="border px-3 py-2 rounded w-full sm:w-1/2 dark-mode" onkeyup="searchTable()" />
+          <input type="date" id="dateFilter" onchange="filterData()" class="border px-3 py-2 rounded  dark-mode" />
+          <input type="month" id="monthFilter" onchange="filterData()" class="border px-3 py-2 rounded  dark-mode" />
+          <button onclick="exportToCSV()" class="bg-green-500 text-white px-4 py-2 rounded">Download CSV</button>
+          <button onclick="showAddForm()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Attendance</button>
+        </div>
+        <div id="attendanceCards" class="space-y-6"></div>
+        <div class="flex justify-center mt-6" id="pagination"></div>
+      </div>
+
+      <!-- Reports Section -->
+      <div id="reportsSection" class="hidden p-4 rounded">
+        <button onclick="backToDashboard()" class="mb-4 bg-blue-600 text-white px-4 py-2 rounded">← Back to
+          Dashboard</button>
+        <h2 class="text-2xl font-semibold mb-4">Attendance Reports</h2>
+        <div id="reportTable" class="overflow-x-auto"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Attendance Modal -->
+  <div id="addFormModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="modal bg-white p-6 rounded shadow-xl w-96">
+      <h2 class="text-xl font-semibold mb-4">Add Attendance</h2>
+      <input id="addName" type="text" placeholder="Name" class="w-full mb-2 p-2 border rounded dark-mode" />
+      <input id="addRoll" type="text" placeholder="Roll No" class="w-full mb-2 p-2 border rounded dark-mode" />
+      <input id="addDate" type="date" class="w-full mb-2 p-2 border rounded light-mode-dashboard1 dark-mode" />
+      <input id="addTime" type="time" class="w-full mb-2 p-2 border rounded light-mode-dashboard1 dark-mode" />
+      <div class="flex justify-end gap-2">
+        <button onclick="addAttendance()" class="bg-green-500 text-white px-4 py-2 rounded">Submit</button>
+        <button onclick="hideAddForm()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Modal -->
+  <div id="studentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="modal bg-white p-6 rounded shadow-xl w-full max-w-lg">
+      <h2 class="text-xl font-bold mb-4">Student Attendance</h2>
+      <div id="studentDetail" class="overflow-y-auto max-h-96"></div>
+      <button onclick="hideStudentModal()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded">Close</button>
+    </div>
+  </div>
+
+</body>
+<script>
+        const sheetId = "/*enter your sheet id*/";
+    const apiKey = "/*google sheet api*/";
+    const range = "Sheet1";
+    const scriptURL = "/*enter your script url here*/";
+    let originalData = [];
+
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      const clr = document.getElementById('clr');
+      const reports = document.getElementById('reportsSection');
+
+      if (isDark) {
+        clr.classList.remove('light-mode-dashboard');
+        clr.classList.add('dark-mode-dashboard');
+        reports.classList.add("bg-gray-800", "text-white");
+      } else {
+        clr.classList.remove('dark-mode-dashboard');
+        clr.classList.add('light-mode-dashboard');
+        reports.classList.remove("bg-gray-800", "text-white");
+      }
+
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    window.onload = () => {
+      const clr = document.getElementById('clr');
+      const reports = document.getElementById('reportsSection');
+
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        clr.classList.add('dark-mode-dashboard');
+        reports.classList.add("bg-gray-800", "text-white");
+      } else {
+        clr.classList.add('light-mode-dashboard');
+        reports.classList.remove("bg-gray-800", "text-white");
+      }
+
+      fetchDataFromGoogleSheet();
+    };
+
+    function fetchDataFromGoogleSheet() {
+      document.getElementById('loader').style.display = 'block';
+      fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          originalData = data.values.slice(1);
+          displayData(originalData);
+          document.getElementById('loader').style.display = 'none';
+        })
+        .catch(error => console.log("Error:", error));
+    }
+        // 🔄 Auto-refresh data every 10 seconds
+        setInterval(fetchDataFromGoogleSheet, 2000);
+
+        // 🔄 Fetch data once when the page loads
+        fetchDataFromGoogleSheet();
+
+    function displayData(data) {
+      document.getElementById("dashboardSection").style.display = "block";
+      document.getElementById("reportsSection").classList.add("hidden");
+      const container = document.getElementById("attendanceCards");
+      container.innerHTML = "";
+      let groupedData = {};
+      data.forEach(row => {
+        let date = row[2];
+        if (!groupedData[date]) groupedData[date] = [];
+        groupedData[date].push(row);
+      });
+
+      for (let date in groupedData) {
+        let card = document.createElement("div");
+        card.classList.add("card", "bg-white", "shadow", "rounded", "p-4");
+        card.innerHTML = `<h3 class='text-xl font-semibold mb-2'>Attendance for ${date}</h3>`;
+        let table = `<table class='w-full text-left border'><thead><tr><th class='border px-2'>Name</th><th class='border px-2'>Roll No</th><th class='border px-2'>Time</th></tr></thead><tbody>`;
+        groupedData[date].forEach(row => {
+          table += `<tr onclick="viewStudent('${row[0]}')" class='hover:bg-gray-100 cursor-pointer'><td class='border px-2'>${row[0]}</td><td class='border px-2'>${row[1]}</td><td class='border px-2'>${row[3]}</td></tr>`;
+        });
+        table += `</tbody></table>`;
+        card.innerHTML += table;
+        container.appendChild(card);
+      }
+    }
+
+    function searchTable() {
+      let input = document.getElementById("searchInput").value.toUpperCase();
+      let cards = document.querySelectorAll("#attendanceCards > div");
+      cards.forEach(card => {
+        card.style.display = card.innerText.toUpperCase().includes(input) ? "block" : "none";
+      });
+    }
+
+    function filterData() {
+      let dateValue = document.getElementById("dateFilter").value;
+      let monthValue = document.getElementById("monthFilter").value;
+      let filteredData = originalData.filter(row => {
+        let rowDate = row[2];
+        if (dateValue && rowDate === dateValue) return true;
+        if (monthValue && rowDate.startsWith(monthValue)) return true;
+        return !dateValue && !monthValue;
+      });
+      displayData(filteredData);
+    }
+
+    function exportToCSV() {
+      let csvContent = "Name,Roll No,Date,Time\n" + originalData.map(e => e.join(",")).join("\n");
+      let blob = new Blob([csvContent], { type: "text/csv" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "AttendanceData.csv";
+      link.click();
+    }
+
+    function showAddForm() {
+      document.getElementById("addFormModal").classList.remove("hidden");
+    }
+
+    function hideAddForm() {
+      document.getElementById("addFormModal").classList.add("hidden");
+    }
+
+    function addAttendance() {
+      const name = document.getElementById("addName").value.trim();
+      const roll = document.getElementById("addRoll").value.trim();
+      const date = document.getElementById("addDate").value;
+      const time = document.getElementById("addTime").value;
+
+      if (!name || !roll || !date || !time) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const newRow = [name, roll, date, time];
+      originalData.push(newRow);
+      displayData(originalData);
+      hideAddForm();
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({ name, roll, date, time }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.text())
+        .then(response => console.log("Posted to sheet:", response))
+        .catch(error => console.error("Error posting to sheet:", error));
+    }
+
+    function viewStudent(name) {
+      let studentRows = originalData.filter(row => row[0] === name);
+      let html = `<table class='w-full border'><thead><tr><th class='border px-2'>Date</th><th class='border px-2'>Time</th></tr></thead><tbody>`;
+      studentRows.forEach(row => {
+        html += `<tr><td class='border px-2'>${row[2]}</td><td class='border px-2'>${row[3]}</td></tr>`;
+      });
+      html += `</tbody></table>`;
+      document.getElementById("studentDetail").innerHTML = html;
+      document.getElementById("studentModal").classList.remove("hidden");
+    }
+
+    function hideStudentModal() {
+      document.getElementById("studentModal").classList.add("hidden");
+    }
+
+    function logout() {
+      alert("Logging out (placeholder)");
+    }
+
+    function showReports() {
+      document.getElementById("dashboardSection").style.display = "none";
+      document.getElementById("reportsSection").classList.remove("hidden");
+
+      let studentMap = {};
+      let uniqueDates = new Set();
+
+      originalData.forEach(row => {
+        let [name, roll, date] = row;
+        uniqueDates.add(date);
+        if (!studentMap[name]) {
+          studentMap[name] = { roll: roll, presentDates: new Set() };
+        }
+        studentMap[name].presentDates.add(date);
+      });
+
+      let totalDays = uniqueDates.size;
+      let reportHTML = `<table class='w-full text-left border'>
+        <thead>
+          <tr>
+            <th class='border px-2 py-1'>Name</th>
+            <th class='border px-2 py-1'>Roll No</th>
+            <th class='border px-2 py-1'>Days Present</th>
+            <th class='border px-2 py-1'>Total Days</th>
+            <th class='border px-2 py-1'>Present %</th>
+          </tr>
+        </thead><tbody>`;
+
+      for (let name in studentMap) {
+        let student = studentMap[name];
+        let daysPresent = student.presentDates.size;
+        let presentPercentage = ((daysPresent / totalDays) * 100).toFixed(2);
+        reportHTML += `<tr>
+          <td class='border px-2 py-1'>${name}</td>
+          <td class='border px-2 py-1'>${student.roll}</td>
+          <td class='border px-2 py-1'>${daysPresent}</td>
+          <td class='border px-2 py-1'>${totalDays}</td>
+          <td class='border px-2 py-1'>${presentPercentage}%</td>
+        </tr>`;
+      }
+
+      reportHTML += `</tbody></table>`;
+      document.getElementById("reportTable").innerHTML = reportHTML;
+    }
+
+    function backToDashboard() {
+      document.getElementById("reportsSection").classList.add("hidden");
+      document.getElementById("dashboardSection").style.display = "block";
+    }
+  
+</script>
+<script src="script.js"></script>
+</html> 

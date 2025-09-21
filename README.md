@@ -1,97 +1,62 @@
-📌 Class Attendance System Using RFID Card
+<div align="center">
 
+# 🎓 Class Attendance System Using RFID Card  
 
-📖 Overview
+🚀 **Smart IoT-based solution for automating student attendance**  
 
-The Class Attendance System Using RFID Card is a smart attendance tracking solution that replaces traditional manual methods.
-Students scan their RFID cards, and the system automatically updates Google Sheets with:
+![Made with ESP8266](https://img.shields.io/badge/Hardware-ESP8266-blue?style=for-the-badge&logo=arduino)  
+![Google Sheets](https://img.shields.io/badge/Database-Google%20Sheets-orange?style=for-the-badge&logo=google)  
+![Web Dashboard](https://img.shields.io/badge/Frontend-HTML%20%7C%20CSS%20%7C%20JS-yellow?style=for-the-badge&logo=javascript)  
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)  
 
-✅ Student Name
-✅ Roll Number
-✅ Date & Time of Attendance
-✅ Attendance Status (Present/Absent)
+</div>
 
-The system also provides real-time web-based reports with dark/light mode, search filters, and CSV export functionality.
+---
 
-✨ Features
+## 📖 Project Overview  
 
-🎫 RFID-based Student Identification
+The **Class Attendance System Using RFID Card** is a **modern attendance tracking solution**.  
+Students simply tap their **RFID cards**, and the system:  
 
-📡 ESP8266 Wi-Fi Integration
+- ✅ Identifies the student  
+- ✅ Stores attendance in **Google Sheets**  
+- ✅ Displays data on a **real-time Web Dashboard**  
+- ✅ Provides **dark/light mode, search, filters & CSV export**  
 
-🔔 Buzzer Alert on Successful Scan
+---
 
-📊 Attendance stored in Google Sheets
+## ✨ Key Features  
 
-🌐 Web Dashboard for Teachers & Admins
+🔹 **RFID-Based Identification** – Every student has a unique RFID card.  
+🔹 **ESP8266 Wi-Fi Enabled** – Attendance data is directly sent online.  
+🔹 **Google Sheets Integration** – Safe & reliable data storage.  
+🔹 **Buzzer Feedback** – Quick confirmation after scanning.  
+🔹 **Web Dashboard** – View, search, filter, and export attendance.  
+🔹 **Dark/Light Mode** – Stylish and user-friendly UI.  
+🔹 **Student Profiles** – Store photo, DOB, address, and parent details.  
 
-🌓 Dark/Light Mode Toggle
+---
 
-📅 Date & Month Filtering
+## 🛠️ Tech Stack  
 
-🔍 Search by Name/Roll Number
+| **Category**    | **Technology** |
+|-----------------|----------------|
+| **Hardware**    | RFID Reader, RFID Cards, ESP8266, Buzzer |
+| **Frontend**    | HTML, Tailwind CSS, JavaScript |
+| **Backend**     | Google Apps Script |
+| **Database**    | Google Sheets |
 
-📂 Export Attendance as CSV
+---
 
-🖼 Student Information (Photo, DOB, Address, Parents’ Details)
+## 🚀 Getting Started  
 
-🛠️ Tech Stack
+### 🔧 Hardware Setup  
+1. Connect **RFID Reader** → ESP8266 (NodeMCU).  
+2. Attach **Buzzer** for sound feedback.  
+3. Power the system with USB/Adapter.  
 
-Hardware: RFID Reader, RFID Tags, ESP8266 (NodeMCU), Buzzer
-
-Backend: Google Apps Script + Google Sheets API
-
-Frontend: HTML, TailwindCSS, JavaScript
-
-Database: Google Sheets
-
-🚀 Getting Started
-🔧 Hardware Setup
-
-Connect RFID Reader with ESP8266.
-
-Attach Buzzer for scan alerts.
-
-Power up with USB/Adapter.
-
-⚙️ Software Setup
-
-Clone the repo:
-
-git clone https://github.com/Neeraj21439/ClassAttendanceSystemUsingRFIDcard.git
-cd ClassAttendanceSystemUsingRFIDcard
-
-
-Upload the ESP8266 Code via Arduino IDE.
-
-Deploy Google Apps Script for Sheets integration.
-
-Update your Web Dashboard with the deployed API link.
-
-📸 Screenshots
-🔹 RFID Scan Success
-
-🔹 Web Dashboard (Dark Mode)
-
-🔹 Google Sheets Attendance Log
-
-📈 Future Improvements
-
-📌 Biometric (Fingerprint) integration
-
-📌 Mobile App for Teachers
-
-📌 Face Recognition-based Attendance
-
-📌 Automatic Email/SMS Alerts to Parents
-
-👨‍💻 Author
-
-Neeraj Bhardwaj
-💡 Passionate about IoT, Web Development, and AI Projects.
-🔗 LinkedIn
- | GitHub
-
-⭐ Show Your Support
-
-If you like this project, give it a ⭐ on GitHub to support future improvements!
+### ⚙️ Software Setup  
+1. Clone this repo:  
+   ```bash
+   git clone https://github.com/your-username/ClassAttendanceSystemUsingRFIDcard.git
+   cd ClassAttendanceSystemUsingRFIDcard

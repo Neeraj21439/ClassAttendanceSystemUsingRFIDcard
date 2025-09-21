@@ -60,3 +60,36 @@ Students simply tap their **RFID cards**, and the system:
    ```bash
    git clone https://github.com/Neeraj21439/ClassAttendanceSystemUsingRFIDcard.git
    cd ClassAttendanceSystemUsingRFIDcard
+Upload ESP8266 code using Arduino IDE.
+
+Deploy Google Apps Script to connect with Sheets.
+
+Add the API URL in your Dashboard JS code.
+
+📸 Screenshots
+🖼 RFID Scan
+
+🖼 Attendance Dashboard (Dark Mode)
+
+🖼 Google Sheets Attendance Log
+
+📈 Future Scope
+
+✨ Fingerprint or Face Recognition Support
+✨ Mobile App for Teachers & Parents
+✨ Automatic Email/SMS Notifications
+✨ Cloud Database (Firebase/MongoDB) Integration
+
+👨‍💻 Author
+
+Neeraj Bhardwaj
+💡 IoT Enthusiast | Web Developer | Innovator
+
+🔗 GitHub
+ • LinkedIn
+
+<div align="center">
+
+⭐ If you found this project useful, don’t forget to star the repo! ⭐
+
+</div> ```

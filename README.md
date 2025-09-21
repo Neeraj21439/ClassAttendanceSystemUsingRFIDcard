@@ -58,5 +58,5 @@ Students simply tap their **RFID cards**, and the system:
 ### ⚙️ Software Setup  
 1. Clone this repo:  
    ```bash
-   git clone https://github.com/your-username/ClassAttendanceSystemUsingRFIDcard.git
+   git clone https://github.com/Neeraj21439/ClassAttendanceSystemUsingRFIDcard.git
    cd ClassAttendanceSystemUsingRFIDcard
